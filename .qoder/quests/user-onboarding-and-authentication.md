@@ -120,6 +120,196 @@ graph TB
 - `TrainingControls` - Playback settings
 - `ProgressTracker` - Training statistics
 
+## Action Flow & User Interactions
+
+### Complete User Action Flow
+
+```mermaid
+flowchart TD
+    A[App Launch] --> B{First Time?}
+    B -->|Yes| C[Welcome Screen]
+    B -->|No| D{Auth Status?}
+    
+    C --> E[Sign In Button]
+    C --> F[Guest Button]
+    
+    E --> G[Google Auth]
+    F --> H[Create Local Profile]
+    G --> I[Sync Cloud Data]
+    H --> J[Main Screen]
+    I --> J
+    
+    D -->|Authenticated| K[Load User Data]
+    D -->|Guest| L[Load Local Data]
+    K --> J
+    L --> J
+    
+    J --> M[Record Phrase]
+    J --> N[Phrase Library]
+    J --> O[Start Training]
+    J --> P[Statistics]
+    J --> Q[Settings]
+    
+    M --> R[Press & Hold Record]
+    R --> S[Release to Stop]
+    S --> T[Save Dialog]
+    T --> U[Auto-navigate to Library]
+    
+    N --> V[View Phrase List]
+    V --> W[Toggle Training Checkmarks]
+    V --> X[Play Audio]
+    V --> Y[Delete Phrase]
+    
+    O --> Z[Training Playlist]
+    Z --> AA[Configure Settings]
+    AA --> BB[Start Training Session]
+    BB --> CC[Background Playback]
+    CC --> DD[Stop Training]
+    DD --> J
+    
+    P --> EE[View Statistics Dashboard]
+    EE --> FF[Filter by Time Period]
+    FF --> GG[View Phrase Progress]
+    
+    Q --> HH[Edit Pet Name]
+    Q --> II[Upload Pet Photo]
+    Q --> JJ[Account Settings]
+```
+
+### Detailed Action Sequences
+
+#### Authentication Action Flow
+1. **App Launch**
+   - System checks authentication state
+   - If first launch → Welcome Screen
+   - If returning user → Auto-login or Main Screen
+
+2. **Sign In Process**
+   - User taps "Sign In" button
+   - Google authentication modal appears
+   - User selects Google account
+   - System validates credentials
+   - Cloud data synchronization begins
+   - Navigate to Main Screen
+
+3. **Guest Mode Process**
+   - User taps "Continue as Guest"
+   - System creates local profile
+   - Navigate directly to Main Screen
+
+#### Phrase Recording Action Flow
+1. **Recording Initiation**
+   - User taps "Record Phrase" on Main Screen
+   - Recording modal appears with instructions
+   - User sees "Press to start recording" message
+
+2. **Recording Process**
+   - User presses and holds record button
+   - Button turns red and pulses
+   - Recording timer starts
+   - User speaks phrase
+
+3. **Recording Completion**
+   - User releases button
+   - Recording stops automatically
+   - Save dialog appears immediately
+   - Auto-generated name with timestamp
+
+4. **Save Process**
+   - User edits phrase name (optional)
+   - User taps "Save" button
+   - Phrase saved to local database
+   - Auto-navigate to Phrase Library
+   - New phrase appears at top of list
+
+#### Library Management Action Flow
+1. **Library Access**
+   - User taps "Phrase Library" on Main Screen
+   - List of all phrases loads with animations
+   - Each phrase shows: name, play button, delete, training toggle
+
+2. **Training Selection**
+   - User taps checkmark next to phrase
+   - Phrase highlights green
+   - Checkmark animates with drawing effect
+   - Training counter updates on Main Screen
+
+3. **Audio Playback**
+   - User taps play button
+   - Circular progress bar appears
+   - Audio plays with visual feedback
+   - Button morphs to pause during playback
+
+4. **Phrase Deletion**
+   - User taps delete button
+   - Confirmation dialog appears
+   - If confirmed, phrase slides out and disappears
+   - Library list updates automatically
+
+#### Training Session Action Flow
+1. **Training Setup**
+   - User taps "Start Training" on Main Screen
+   - Training screen loads with selected phrases
+   - User sees playlist of training phrases
+   - Training controls visible (mode, interval)
+
+2. **Configuration**
+   - User adjusts interval slider (5s to 5min)
+   - User selects playback mode (loop/random/sequential)
+   - User can add/remove phrases from training list
+
+3. **Training Execution**
+   - User taps "Start Training"
+   - Button changes to "Stop Training"
+   - First phrase begins playing
+   - Timer countdown starts for next phrase
+   - Current phrase highlighted
+
+4. **Session Management**
+   - Phrases play according to selected mode
+   - Session statistics update in real-time
+   - Training continues in background if screen locked
+   - User can stop training at any time
+
+5. **Session Completion**
+   - User taps "Stop Training"
+   - Session data saved automatically
+   - Statistics updated
+   - Return to Main Screen
+
+#### Statistics Viewing Action Flow
+1. **Statistics Access**
+   - User taps "Statistics" on Main Screen
+   - Dashboard loads with staggered animations
+   - General statistics card appears first
+
+2. **Time Filter Navigation**
+   - User taps time period tabs (Today/Week/All Time)
+   - Statistics update with smooth transitions
+   - Charts animate to new data
+
+3. **Phrase Progress Review**
+   - User scrolls through phrase progress list
+   - Each phrase shows completion percentage
+   - Progress bars animate on scroll into view
+
+### Error Handling Action Flows
+
+#### Authentication Errors
+- **Network Failure**: Show retry button with offline mode option
+- **Auth Rejection**: Clear error message with alternative options
+- **Account Conflict**: Guided merge process with user choices
+
+#### Recording Errors
+- **Permission Denied**: Settings guidance with direct link
+- **Storage Full**: Cleanup suggestions with space indicators
+- **Audio Failure**: Retry option with troubleshooting tips
+
+#### Playback Errors
+- **File Corruption**: Skip to next phrase with notification
+- **Audio Device Issues**: Switch to speaker/headphones prompt
+- **Background Restrictions**: Permission request with explanation
+
 ## User Flow & Screen Architecture
 
 ### 1. Welcome & Authentication Flow
